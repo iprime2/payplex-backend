@@ -1,23 +1,24 @@
-# Step 1: Use official Node.js base image
+# Step 1: Base image
 FROM node:18-alpine
 
 # Step 2: Set working directory
 WORKDIR /app
 
-# Step 3: Copy package files and install production dependencies
+# Step 3: Install all dependencies (incl. dev)
 COPY package*.json ./
-RUN npm install --production
+RUN npm install
 
-# Step 4: Copy the rest of the source code
+# Step 4: Copy source code
 COPY . .
 
-# Step 5: Build the TypeScript code
+# Step 5: Build TypeScript
 RUN npm run build
-RUN mkdir -p uploads
 
-# Step 6: Expose the port your app uses (e.g., 5000)
+# Step 6: Create upload folders if needed
+# RUN mkdir -p uploads
+
+# Step 7: Expose app port
 EXPOSE 5000
 
-# Step 7: Start the app using the built JS file
+# Step 8: Start application
 CMD ["node", "dist/server.js"]
-

@@ -15,8 +15,7 @@ app.use(express.json());
 const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5000',
-  'https://your-prod-domain.com',
-  'https://your-staging-domain.com',
+  'https://payplex-fronend.vercel.app',
 ];
 
 app.use(

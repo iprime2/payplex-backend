@@ -4,14 +4,23 @@ import * as PageService from './page.service';
 
 export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const logoFilePath = req.file ? req.file.path : undefined;
-    req.body.logo = logoFilePath;
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+    if (files?.logo?.[0]) {
+      req.body.logo = files.logo[0].path;
+    }
+
+    if (files?.bannerImage?.[0]) {
+      req.body.bannerImage = files.bannerImage[0].path;
+    }
+
     const page = await PageService.createPage(req.body);
     res.status(201).json({ success: true, data: page });
   } catch (err) {
     next(err);
   }
 };
+
 
 export const getAll = async (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -34,12 +43,21 @@ export const getOne = async (req: Request, res: Response, next: NextFunction) =>
 
 export const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const payload = req.body || {}; // ✅ fallback to empty object
-    if (req.file) {
-      payload.logo = req.file.path;
+    const payload = req.body || {};
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+    if (files?.logo?.[0]) {
+      payload.logo = files.logo[0].path;
     }
-    
-    console.log(payload);
+
+    if (files?.bannerImage?.[0]) {
+      payload.bannerImage = files.bannerImage[0].path;
+    }
+
+    if (typeof payload.isActive === 'string') {
+      payload.isActive = payload.isActive === 'true';
+    }
+
     const page = await PageService.updatePage(req.params.id, payload);
     res.json({ success: true, data: page });
   } catch (err) {

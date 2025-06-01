@@ -18,45 +18,49 @@ const router = Router();
 
 /**
  * @swagger
- * /pages:
- *   post:
- *     summary: Create a new page
- *     tags: [Pages]
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               mailId:
- *                 type: string
- *                 example: admin@example.com
- *               contact:
- *                 type: string
- *                 example: "+123456789"
- *               bannerImage:
- *                 type: string
- *                 example: "https://example.com/banner.png"
- *               header:
- *                 type: string
- *                 example: "Welcome to Our Page"
- *               text:
- *                 type: string
- *                 example: "Some page description text."
- *               address:
- *                 type: string
- *                 example: "123 Main St, City, Country"
- *               logo:
- *                 type: string
- *                 format: binary
- *                 description: The logo image file to upload
- *     responses:
- *       201:
- *         description: Page created successfully
+* /pages:
+*   post:
+*     summary: Create a new page
+*     tags: [Pages]
+*     requestBody:
+*       required: true
+*       content:
+*         multipart/form-data:
+*           schema:
+*             type: object
+*             properties:
+*               mailId:
+*                 type: string
+*                 example: admin@example.com
+*               contact:
+*                 type: string
+*                 example: "+123456789"
+*               bannerImage:
+*                 type: string
+*                 format: binary
+*                 description: Banner image file
+*               header:
+*                 type: string
+*               text:
+*                 type: string
+*               address:
+*                 type: string
+*               logo:
+*                 type: string
+*                 format: binary
+*                 description: The logo image file to upload
  */
-router.post('/', authenticateJWT as unknown as RequestHandler, authorizeRoles('admin') as unknown as RequestHandler, uploadLogo.single('logo'), PageController.create as RequestHandler);
-
+router.post(
+    '/',
+    authenticateJWT as unknown as RequestHandler,
+    authorizeRoles('admin') as unknown as RequestHandler,
+    uploadLogo.fields([
+      { name: 'logo', maxCount: 1 },
+      { name: 'bannerImage', maxCount: 1 },
+    ]),
+    PageController.create as RequestHandler
+);
+  
 /**
  * @swagger
  * /pages:
@@ -102,17 +106,43 @@ router.get('/:id', PageController.getOne as RequestHandler);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/UpdatePageDto'
- *           example:
- *             header: "Updated Header Text"
- *             status: true
+ *             type: object
+ *             properties:
+ *               mailId:
+ *                 type: string
+ *               contact:
+ *                 type: string
+ *               bannerImage:
+ *                 type: string
+ *                 format: binary
+ *               header:
+ *                 type: string
+ *               text:
+ *                 type: string
+ *               address:
+ *                 type: string
+ *               isActive:
+ *                 type: boolean
+ *               logo:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Page updated
  */
-router.patch('/:id', authenticateJWT as unknown as RequestHandler, authorizeRoles('admin') as unknown as RequestHandler, uploadLogo.single('logo'), PageController.update as RequestHandler);
+router.patch(
+    '/:id',
+    authenticateJWT as unknown as RequestHandler,
+    authorizeRoles('admin') as unknown as RequestHandler,
+    uploadLogo.fields([
+      { name: 'logo', maxCount: 1 },
+      { name: 'bannerImage', maxCount: 1 },
+    ]),
+    PageController.update as RequestHandler
+);
+  
 
 /**
  * @swagger

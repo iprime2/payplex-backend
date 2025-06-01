@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Page {
@@ -28,6 +34,9 @@ export class Page {
 
   @Column({ default: true })
   isActive!: boolean;
+
+  @Column({ unique: true })
+  slug!: string;
 
   @CreateDateColumn()
   createdAt!: Date;

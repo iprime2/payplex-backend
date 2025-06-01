@@ -21,4 +21,5 @@ RUN npm run build
 EXPOSE 5000
 
 # Step 8: Start application
-CMD ["node", "dist/server.js"]
+# CMD ["node", "dist/server.js"]
+CMD ["npm", "run", "dev"]

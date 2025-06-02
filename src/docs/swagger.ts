@@ -1,6 +1,8 @@
 // src/docs/swagger.ts
 import swaggerJsdoc from 'swagger-jsdoc';
 
+const apiBaseUrl = process.env.API_BASE_URL || 'http://localhost:5000/api';
+
 export const swaggerOptions: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',

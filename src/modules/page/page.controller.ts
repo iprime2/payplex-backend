@@ -14,6 +14,10 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
       req.body.bannerImage = files.bannerImage[0].path;
     }
 
+    if (typeof req.body.isActive === 'string') {
+      req.body.isActive = req.body.isActive === 'true';
+    }
+
     const page = await PageService.createPage(req.body);
     res.status(201).json({ success: true, data: page });
   } catch (err) {

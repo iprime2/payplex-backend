@@ -16,6 +16,7 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5000',
   'https://payplex-fronend.vercel.app',
+  'https://payplex-backend.onrender.com'
 ];
 
 app.use(

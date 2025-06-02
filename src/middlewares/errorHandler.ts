@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import { logger } from '@/utils/logger';
+import { logger } from '../utils/logger';
 
 export const errorHandler = (err: any, req: Request, res: Response, _next: NextFunction) => {
   // Log the error with timestamp

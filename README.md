@@ -7,7 +7,8 @@ This is the backend for the Payplex Admin/User system, built with TypeScript, Ex
 ## 🌐 Production Deployment
 
 The application is deployed at:
-- Frontend: https://payplex-fronend.vercel.app/
+- Backend: https://payplex-backend.onrender.com/api
+- Swagger: https://payplex-backend.onrender.com/api-docs/
 
 ---
 
